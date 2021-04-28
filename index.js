@@ -1,6 +1,9 @@
 const Twit = require("twit");
 require("dotenv").config()
-
+const express = require("express");
+const PORT = process.env.PORT || 5000;
+const app = express();
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 function reverseString(str) {
     // Step 1. Use the split() method to return a new array
     var splitString = str.split(""); // var splitString = "hello".split("");
