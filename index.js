@@ -38,7 +38,6 @@ function BotInit(){
             const userName = data.statuses[0].user.screen_name;
             const tweetId = data.statuses[0].id_str;
             const text = data.statuses[0].text;
-            console.log(data.statuses[0])
             if(data.statuses[0].in_reply_to_status_id==null){
 
                 bot.post('statuses/update', { in_reply_to_status_id: tweetId, status: `@${userName} ${reverseString(text)}` }, (err, data, response) => {
