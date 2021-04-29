@@ -40,7 +40,8 @@ function BotInit(){
                 const userName =tweet.user.screen_name;
                 const tweetId = tweet.id_str;
                 const text = tweet.text;
-                if(tweet.in_reply_to_status_id==null){
+                if(tweet.in_reply_to_status_id==null&&parseInt(tweet.favorite_count)<10){
+                    console.log(tweet)
                     if(tweet.truncated){
                         const text2 = tweet.text.split(/\shttp?s/)[0];
                         bot.post('statuses/update', { in_reply_to_status_id: tweetId, status: `@${userName} ${reverseString(text2)}` }, (err, data, response) => {
@@ -57,7 +58,7 @@ function BotInit(){
                         }else{
                                 console.log("bot respondeu",+"@"+userName+text);
                         }
-                    })
+                   })
                 }
             }
            })
