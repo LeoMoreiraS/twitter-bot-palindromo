@@ -28,7 +28,7 @@ const bot = new Twit({
 
 function BotInit(){
     var query ={
-        q:"from:quittkett",
+        q:`from:${process.env.USER}`,
     };
 
     bot.get("search/tweets",query,(err,data,res)=>{
