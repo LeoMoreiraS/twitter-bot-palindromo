@@ -7,4 +7,5 @@ ACCESS_TOKEN_SECRET=
 USER=
 
 o User é o usuario do twitter da pessoa que você quer dar reply
+
 O arquivo vbs roda o bot com node em segundo plano
