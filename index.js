@@ -1,9 +1,6 @@
 const Twit = require("twit");
 require("dotenv").config()
-const express = require("express");
-const PORT = process.env.PORT || 5000;
-const app = express();
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
 function reverseString(str) {
     // Step 1. Use the split() method to return a new array
     var splitString = str.split(""); // var splitString = "hello".split("");
@@ -31,30 +28,43 @@ const bot = new Twit({
 
 function BotInit(){
     var query ={
-        q:"from:marciosaales",
+        q:"from:quittkett",
     };
 
     bot.get("search/tweets",query,(err,data,res)=>{
         if(err){
             console.error(err);
         }else{
-            const userName = data.statuses[0].user.screen_name;
-            const tweetId = data.statuses[0].id_str;
-            const text = data.statuses[0].text;
-            if(data.statuses[0].in_reply_to_status_id==null){
-
-                bot.post('statuses/update', { in_reply_to_status_id: tweetId, status: `@${userName} ${reverseString(text)}` }, (err, data, response) => {
-                    if(err){
-                        console.error(err)
+            data.statuses.forEach(tweet=>{
+                
+                const userName =tweet.user.screen_name;
+                const tweetId = tweet.id_str;
+                const text = tweet.text;
+                if(tweet.in_reply_to_status_id==null){
+                    if(tweet.truncated){
+                        const text2 = tweet.text.split(/\shttp?s/)[0];
+                        bot.post('statuses/update', { in_reply_to_status_id: tweetId, status: `@${userName} ${reverseString(text2)}` }, (err, data, response) => {
+                            if(err){
+                                console.error(err)
+                            }else{
+                                    console.log("bot respondeu",+"@"+userName+text2);
+                            }
+                        })
                     }else{
-                            console.log("bot respondeu",+"@"+userName+text);
-                    }
-                })
-           }
+                    bot.post('statuses/update', { in_reply_to_status_id: tweetId, status: `@${userName} ${reverseString(text)}` }, (err, data, response) => {
+                        if(err){
+                            console.error(err)
+                        }else{
+                                console.log("bot respondeu",+"@"+userName+text);
+                        }
+                    })
+                }
+            }
+           })
                             
         }
         
     })  
 }
-setInterval(BotInit,60000);
-BotInit();
+setInterval(BotInit,120000);
+BotInit()
