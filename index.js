@@ -30,7 +30,7 @@ function BotInit(){
     var query ={
         q:`from:${process.env.USER}`,
     };
-
+    console.log("buscando tweets");
     bot.get("search/tweets",query,(err,data,res)=>{
         if(err){
             console.error(err);
@@ -67,5 +67,5 @@ function BotInit(){
         
     })  
 }
-setInterval(BotInit,120000);
+setInterval(BotInit,5*60*1000);
 BotInit()
